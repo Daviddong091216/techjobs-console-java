@@ -2,6 +2,7 @@ package org.launchcode.techjobs.console;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -43,12 +44,13 @@ public class TechJobs {
 
                     ArrayList<String> results = JobData.findAll(columnChoice);
 
-                    System.out.println("\n*** All " + columnChoices.get(columnChoice) + " Values ***");
+                    System.out.println("\n***** All " + columnChoices.get(columnChoice) + " Values *****");
 
                     // Print list of skills, employers, etc
                     for (String item : results) {
                         System.out.println(item);
                     }
+                    System.out.println("The total "+ columnChoices.get(columnChoice) + " is: " + results.size() );
                 }
 
             } else { // choice is "search"
@@ -61,7 +63,7 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -94,11 +96,12 @@ public class TechJobs {
             }
 
             choiceIdx = in.nextInt();
-            in.nextLine();
+            in.nextLine();//David commented the code, why???;
 
             // Validate user's input
             if (choiceIdx < 0 || choiceIdx >= choiceKeys.length) {
                 System.out.println("Invalid choice. Try again.");
+                validChoice = false;//David modified the code, made it is easy to read.
             } else {
                 validChoice = true;
             }
@@ -111,6 +114,18 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        int jobCount = 0;
+        ArrayList<HashMap<String, String>> allJobs = someJobs;
+        for (HashMap<String, String> allJob : allJobs) {
+            System.out.println("\n**********");
+            for (Map.Entry<String, String> job : allJob.entrySet()) {
+                System.out.println(job.getKey() + " : " + job.getValue());
+            }
+            jobCount ++;
+        }
+        System.out.println("\n**********");
+        System.out.println("The total result is: " + jobCount);
+
+//        System.out.println("printJobs is not implemented yet");
     }
 }
